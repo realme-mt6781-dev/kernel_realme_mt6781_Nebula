@@ -787,7 +787,7 @@ config GCOV_PROFILE_FTRACE
 
 config MMSTAT_TRACER
 	tristate "Trace memory status periodically"
-	default y
+	default m
 	help
 	  Periodic tracing of memory status.
 
