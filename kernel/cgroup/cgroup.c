@@ -6489,8 +6489,10 @@ static ssize_t show_delegatable_files(struct cftype *files, char *buf,
 
 		ret += snprintf(buf + ret, size - ret, "%s\n", cft->name);
 
-		if (WARN_ON(ret >= size))
+		if (unlikely(ret >= size)) {
+			WARN_ON(1);
 			break;
+		}
 	}
 
 	return ret;
@@ -6524,7 +6526,6 @@ static struct kobj_attribute cgroup_features_attr = __ATTR_RO(features);
 
 static struct attribute *cgroup_sysfs_attrs[] = {
 	&cgroup_delegate_attr.attr,
-	&cgroup_features_attr.attr,
 	NULL,
 };
 
