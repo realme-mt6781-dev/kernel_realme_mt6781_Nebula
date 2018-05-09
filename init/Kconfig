@@ -1271,13 +1271,11 @@ config LD_DEAD_CODE_DATA_ELIMINATION
 	bool "Dead code and data elimination (EXPERIMENTAL)"
 	depends on HAVE_LD_DEAD_CODE_DATA_ELIMINATION
 	depends on EXPERT
-	depends on !(FUNCTION_TRACER && CC_IS_GCC && GCC_VERSION < 40800)
-	depends on $(cc-option,-ffunction-sections -fdata-sections)
-	depends on $(ld-option,--gc-sections)
 	help
-	  Enable this if you want to do dead code and data elimination with
-	  the linker by compiling with -ffunction-sections -fdata-sections,
-	  and linking with --gc-sections.
+	  Select this if the architecture wants to do dead code and
+	  data elimination with the linker by compiling with
+	  -ffunction-sections -fdata-sections, and linking with
+	  --gc-sections.
 
 	  This can reduce on disk and in-memory size of the kernel
 	  code and static data, particularly for small configs and
