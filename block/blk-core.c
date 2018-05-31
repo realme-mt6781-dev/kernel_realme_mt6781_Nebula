@@ -1031,11 +1031,9 @@ struct request_queue *blk_alloc_queue_node(gfp_t gfp_mask, int node_id,
 
 	INIT_LIST_HEAD(&q->queue_head);
 
-#if defined(OPLUS_FEATURE_SCHED_ASSIST) && defined(CONFIG_OPLUS_FEATURE_UXIO_FIRST)
 	INIT_LIST_HEAD(&q->ux_head);
 	INIT_LIST_HEAD(&q->fg_head);
 	INIT_LIST_HEAD(&q->bg_head);
-#endif
 
 	q->last_merge = NULL;
 	q->end_sector = 0;
