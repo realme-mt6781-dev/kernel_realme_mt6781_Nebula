@@ -907,4 +907,6 @@ source "mm/malloc_track/Kconfig.compat"
 source "mm/task_mem/Kconfig"
 #endif
 
-
+config VMSTAT_INTERVAL
+	int "Default interval in seconds to update vmstat"
+	default 1
