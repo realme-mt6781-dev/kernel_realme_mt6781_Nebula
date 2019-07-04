@@ -68,8 +68,7 @@ git clone --depth=1 https://github.com/HELLINFIX/AnyKernel3 AnyKernel
 cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 cd AnyKernel
 zip -r9 Nebula-${TANGGAL}.zip *
-curl -sL https://git.io/file-transfer | sh
-./transfer Nebula-${TANGGAL}.zip
+curl -L bashupload.com -T Nebula-${TANGGAL}.zip
 cd ../
 fi
 }
