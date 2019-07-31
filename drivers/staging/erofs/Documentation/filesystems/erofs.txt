@@ -80,6 +80,10 @@ Module parameters
 =================
 use_vmap=[0|1]         Use vmap() instead of vm_map_ram() (default 0).
 
+Module parameters
+=================
+use_vmap=[0|1]         Use vmap() instead of vm_map_ram() (default 0).
+
 On-disk details
 ===============
 
