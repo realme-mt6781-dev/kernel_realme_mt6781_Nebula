@@ -1610,6 +1610,14 @@ static int __init thermal_init(void)
 	int result;
 
 	mutex_init(&poweroff_lock);
+	thermal_passive_wq = alloc_workqueue("thermal_passive_wq",
+						WQ_UNBOUND | WQ_FREEZABLE,
+						THERMAL_MAX_ACTIVE);
+	if (!thermal_passive_wq) {
+		result = -ENOMEM;
+		goto error;
+	}
+
 	result = thermal_register_governors();
 	if (result)
 		goto error;
