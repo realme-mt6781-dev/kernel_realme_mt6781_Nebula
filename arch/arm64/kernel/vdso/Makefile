@@ -15,8 +15,12 @@ obj-vdso-s := $(addprefix $(obj)/, $(obj-vdso-s))
 obj-vdso-c := $(addprefix $(obj)/, $(obj-vdso-c))
 obj-vdso   := $(obj-vdso-c) $(obj-vdso-s)
 
+# -Bsymbolic has been added for consistency with arm, the compat vDSO and
+# potential future proofing if we end up with internal calls to the exported
+# routines, as x86 does (see 6f121e548f83 ("x86, vdso: Reimplement vdso.so
+# preparation in build-time C"))
 ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1  --hash-style=sysv \
-		--build-id -n -T
+		-Bsymbolic --build-id -n -T
 ccflags-y := -fno-stack-protector
 ccflags-y += -DDISABLE_BRANCH_PROFILING -ffixed-x18
 ccflags-y += $(DISABLE_LTO)
