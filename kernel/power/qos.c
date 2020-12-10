@@ -1419,6 +1419,9 @@ static int __init pm_qos_power_init(void)
 	/* Don't let userspace impose restrictions on CPU idle levels */
 	return 0;
 
+	/* Don't let userspace impose restrictions on CPU idle levels */
+	return 0;
+
 	d = debugfs_create_dir("pm_qos", NULL);
 	if (IS_ERR_OR_NULL(d))
 		d = NULL;
