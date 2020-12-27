@@ -24,6 +24,7 @@ obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
 ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1 --hash-style=sysv \
 		-Bsymbolic --eh-frame-hdr --build-id -n -T
 
+ccflags-y += $(call cc-option, -fno-whole-program)
 ccflags-y += $(DISABLE_LTO)
 
 ccflags-y := -fno-common -fno-builtin -fno-stack-protector -ffixed-x18
