@@ -764,6 +764,10 @@ KBUILD_CFLAGS   += -O3
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS += $(call cc-option,-mcpu=cortex-a76.cortex-a55)
 endif
+ifdef CONFIG_INLINE_OPTIMIZATION
+KBUILD_CFLAGS	+= -mllvm -inline-threshold=600
+KBUILD_CFLAGS	+= -mllvm -inlinehint-threshold=750
+endif
 endif
 
 OPT_FLAGS := -O3 -march=armv8.2-a+dotprod -mcpu=cortex-a55+crypto+crc
