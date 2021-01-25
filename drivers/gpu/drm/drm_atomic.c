@@ -35,6 +35,7 @@
 #include <linux/sync_file.h>
 #include <linux/pm_qos.h>
 #include <linux/devfreq_boost.h>
+#include <linux/sched/sysctl.h>
 
 #include "drm_crtc_internal.h"
 #include "drm_internal.h"
