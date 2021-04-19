@@ -435,6 +435,7 @@ KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
 GCC_PLUGINS_CFLAGS :=
 CLANG_FLAGS :=
 OPPO_F2FS_DEBUG := false
+TARGET_BUILD_VARIANT := user
 
 ifeq ($(OPLUS_HIGH_TEMP_VERSION),true)
 KBUILD_CFLAGS += -DCONFIG_HIGH_TEMP_VERSION
@@ -485,6 +486,7 @@ export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL
 export KBUILD_ARFLAGS
 export OPPO_F2FS_DEBUG
 
+export TARGET_BUILD_VARIANT
 # When compiling out-of-tree modules, put MODVERDIR in the module
 # tree rather than in the kernel tree. The kernel tree might
 # even be read-only.
