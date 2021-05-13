@@ -417,7 +417,7 @@ static INT32 mtk_wmt_probe(struct platform_device *pdev)
 			wmt_consys_ic_ops->consys_ic_emi_mpu_set_region_protection();
 
 		pConnsysEmiStart = ioremap(gConEmiPhyBase, gConEmiSize);
-		WMT_PLAT_PR_INFO("Clearing Connsys EMI (virtual(0x%p) physical(0x%pa)) %llu bytes\n",
+		WMT_PLAT_PR_DBG("Clearing Connsys EMI (virtual(0x%p) physical(0x%pa)) %llu bytes\n",
 				   pConnsysEmiStart, &gConEmiPhyBase, gConEmiSize);
 		memset_io(pConnsysEmiStart, 0, gConEmiSize);
 		iounmap(pConnsysEmiStart);
@@ -436,7 +436,7 @@ static INT32 mtk_wmt_probe(struct platform_device *pdev)
 	}
 
 #ifdef CONFIG_MTK_HIBERNATION
-	WMT_PLAT_PR_INFO("register connsys restore cb for complying with IPOH function\n");
+	WMT_PLAT_PR_DBG("register connsys restore cb for complying with IPOH function\n");
 	register_swsusp_restore_noirq_func(ID_M_CONNSYS, mtk_wcn_consys_hw_restore, NULL);
 #endif
 
@@ -465,14 +465,14 @@ static INT32 mtk_wmt_probe(struct platform_device *pdev)
 				if (pin_ret)
 					pin_ret = of_property_read_u32(pins_node, "pins", &pinmux);
 				gps_lna_pin_num = (pinmux >> 8) & 0xff;
-				WMT_PLAT_PR_INFO("GPS LNA gpio pin number:%d, pinmux:0x%08x.\n",
+				WMT_PLAT_PR_DBG("GPS LNA gpio pin number:%d, pinmux:0x%08x.\n",
 						   gps_lna_pin_num, pinmux);
 			}
 		}
 	}
 
 	wifi_ant_swap_gpio_pin_num = of_get_named_gpio(pdev->dev.of_node, "wifi_ant_swap_gpio", 0);
-	WMT_PLAT_PR_INFO("ant swap pin number:%d\n", wifi_ant_swap_gpio_pin_num);
+	WMT_PLAT_PR_DBG("ant swap pin number:%d\n", wifi_ant_swap_gpio_pin_num);
 
 	if (wmt_consys_ic_ops->consys_ic_store_reset_control)
 		wmt_consys_ic_ops->consys_ic_store_reset_control(pdev);
@@ -684,7 +684,7 @@ INT32 mtk_wcn_consys_hw_reg_ctrl(UINT32 on, UINT32 co_clock_type)
 {
 	INT32 iRet = 0;
 
-	WMT_PLAT_PR_INFO("CONSYS-HW-REG-CTRL(0x%08x),start\n", on);
+	WMT_PLAT_PR_DBG("CONSYS-HW-REG-CTRL(0x%08x),start\n", on);
 
 	if (on) {
 		WMT_PLAT_PR_DBG("++\n");
@@ -703,7 +703,7 @@ INT32 mtk_wcn_consys_hw_reg_ctrl(UINT32 on, UINT32 co_clock_type)
 		udelay(150);
 
 		if (co_clock_type) {
-			WMT_PLAT_PR_INFO("co clock type(%d),turn on clk buf\n", co_clock_type);
+			WMT_PLAT_PR_DBG("co clock type(%d),turn on clk buf\n", co_clock_type);
 			if (wmt_consys_ic_ops->consys_ic_clock_buffer_ctrl)
 				wmt_consys_ic_ops->consys_ic_clock_buffer_ctrl(ENABLE);
 		}
@@ -804,7 +804,7 @@ INT32 mtk_wcn_consys_hw_reg_ctrl(UINT32 on, UINT32 co_clock_type)
 		if (wmt_consys_ic_ops->consys_ic_cr_remapping)
 			wmt_consys_ic_ops->consys_ic_cr_remapping(0);
 	}
-	WMT_PLAT_PR_INFO("CONSYS-HW-REG-CTRL(0x%08x),finish\n", on);
+	WMT_PLAT_PR_DBG("CONSYS-HW-REG-CTRL(0x%08x),finish\n", on);
 	return iRet;
 }
 /*tag4 wujun api big difference end*/
@@ -830,9 +830,9 @@ INT32 mtk_wcn_consys_hw_efuse_paldo_ctrl(UINT32 enable, UINT32 co_clock_type)
 		if (wmt_consys_ic_ops->consys_ic_hw_vcn28_ctrl)
 			wmt_consys_ic_ops->consys_ic_hw_vcn28_ctrl(enable);
 		if (enable)
-			WMT_PLAT_PR_INFO("turn on vcn28 for efuse usage in co-clock mode\n");
+			WMT_PLAT_PR_DBG("turn on vcn28 for efuse usage in co-clock mode\n");
 		else
-			WMT_PLAT_PR_INFO("turn off vcn28 for efuse usage in co-clock mode\n");
+			WMT_PLAT_PR_DBG("turn off vcn28 for efuse usage in co-clock mode\n");
 	}
 	return 0;
 }
@@ -843,9 +843,9 @@ INT32 mtk_wcn_consys_hw_vcn28_ctrl(UINT32 enable)
 	if (wmt_consys_ic_ops->consys_ic_hw_vcn28_ctrl)
 		wmt_consys_ic_ops->consys_ic_hw_vcn28_ctrl(enable);
 	if (enable)
-		WMT_PLAT_PR_INFO("turn on vcn28 for fm/gps usage in co-clock mode\n");
+		WMT_PLAT_PR_DBG("turn on vcn28 for fm/gps usage in co-clock mode\n");
 	else
-		WMT_PLAT_PR_INFO("turn off vcn28 for fm/gps usage in co-clock mode\n");
+		WMT_PLAT_PR_DBG("turn off vcn28 for fm/gps usage in co-clock mode\n");
 	return 0;
 }
 
@@ -959,7 +959,7 @@ INT32 mtk_wcn_consys_hw_pwr_on(UINT32 co_clock_type)
 {
 	INT32 iRet = 0;
 
-	WMT_PLAT_PR_INFO("CONSYS-HW-PWR-ON, start\n");
+	WMT_PLAT_PR_DBG("CONSYS-HW-PWR-ON, start\n");
 	if (!gConEmiPhyBase) {
 		WMT_PLAT_PR_ERR("EMI base address is invalid, CONNSYS can not be powered on!");
 		return -WMT_ERRCODE_EMI_NOT_READY;
@@ -972,7 +972,7 @@ INT32 mtk_wcn_consys_hw_pwr_on(UINT32 co_clock_type)
 	iRet = mtk_wcn_consys_hw_gpio_ctrl(1);
 	mtk_wcn_consys_jtag_set_for_mcu();
 
-	WMT_PLAT_PR_INFO("CONSYS-HW-PWR-ON, finish(%d)\n", iRet);
+	WMT_PLAT_PR_DBG("CONSYS-HW-PWR-ON, finish(%d)\n", iRet);
 
 	return iRet;
 }
@@ -981,7 +981,7 @@ INT32 mtk_wcn_consys_hw_pwr_off(UINT32 co_clock_type)
 {
 	INT32 iRet = 0;
 
-	WMT_PLAT_PR_INFO("CONSYS-HW-PWR-OFF, start\n");
+	WMT_PLAT_PR_DBG("CONSYS-HW-PWR-OFF, start\n");
 
 	iRet = mtk_wcn_consys_hw_reg_ctrl(0, co_clock_type);
 	if (iRet) {
@@ -990,7 +990,7 @@ INT32 mtk_wcn_consys_hw_pwr_off(UINT32 co_clock_type)
 	}
 	iRet = mtk_wcn_consys_hw_gpio_ctrl(0);
 
-	WMT_PLAT_PR_INFO("CONSYS-HW-PWR-OFF, finish(%d)\n", iRet);
+	WMT_PLAT_PR_DBG("CONSYS-HW-PWR-OFF, finish(%d)\n", iRet);
 	return iRet;
 }
 
@@ -998,7 +998,7 @@ INT32 mtk_wcn_consys_hw_rst(UINT32 co_clock_type)
 {
 	INT32 iRet = 0;
 
-	WMT_PLAT_PR_INFO("CONSYS-HW, hw_rst start, eirq should be disabled before this step\n");
+	WMT_PLAT_PR_DBG("CONSYS-HW, hw_rst start, eirq should be disabled before this step\n");
 
 	mtk_consys_set_chip_reset_status(1);
 
@@ -1028,7 +1028,7 @@ INT32 mtk_wcn_consys_hw_rst(UINT32 co_clock_type)
 
 	mtk_consys_set_chip_reset_status(0);
 
-	WMT_PLAT_PR_INFO("CONSYS-HW, hw_rst finish, eirq should be enabled after this step\n");
+	WMT_PLAT_PR_DBG("CONSYS-HW, hw_rst finish, eirq should be enabled after this step\n");
 	return iRet;
 }
 
@@ -1147,7 +1147,7 @@ INT32 mtk_wcn_consys_set_dbg_mode(UINT32 flag)
 	} else {
 		CONSYS_REG_WRITE(vir_addr, 0x0);
 	}
-	WMT_PLAT_PR_INFO("fw dbg mode register value(0x%08x)\n", CONSYS_REG_READ(vir_addr));
+	WMT_PLAT_PR_DBG("fw dbg mode register value(0x%08x)\n", CONSYS_REG_READ(vir_addr));
 	return ret;
 }
 
@@ -1161,7 +1161,7 @@ INT32 mtk_wcn_consys_set_dynamic_dump(PUINT32 str_buf)
 		return -2;
 	}
 	memcpy(vir_addr, str_buf, DYNAMIC_DUMP_GROUP_NUM*8);
-	WMT_PLAT_PR_INFO("dynamic dump register value(0x%08x)\n", CONSYS_REG_READ(vir_addr));
+	WMT_PLAT_PR_DBG("dynamic dump register value(0x%08x)\n", CONSYS_REG_READ(vir_addr));
 	return 0;
 }
 
