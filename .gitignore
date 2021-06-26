@@ -132,3 +132,14 @@ all.config
 
 # Kdevelop4
 *.kdev4
+
+# fetched Android config fragments
+kernel/configs/android-*.cfg
+
+/out/
+/clang/
+/gcc32/
+/gcc64/
+/AnyKernel/
+/modules/
+error.log
