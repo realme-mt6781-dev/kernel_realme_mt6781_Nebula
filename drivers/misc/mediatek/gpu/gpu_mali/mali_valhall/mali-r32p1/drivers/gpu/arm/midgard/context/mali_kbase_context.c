@@ -149,6 +149,11 @@ static int kbase_insert_kctx_to_process(struct kbase_context *kctx)
 					kctx->kbdev->proc_sysfs_node,
 					"%d", tgid));
 
+        WARN_ON(kobject_init_and_add(
+					&kprcs->kobj, &kprcs_ktype,
+					kctx->kbdev->proc_sysfs_node,
+					"%d", tgid));
+
 		while (*new) {
 			struct kbase_process *prcs_node;
 
