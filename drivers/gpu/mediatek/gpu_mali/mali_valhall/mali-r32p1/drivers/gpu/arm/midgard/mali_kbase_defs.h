@@ -945,6 +945,7 @@ struct kbase_process {
  * @gpu_mem_usage_lock:     This spinlock should be held while accounting
  *                          @total_gpu_pages for both native and dma-buf imported
  *                          allocations.
+ * @proc_sysfs_node:        Sysfs directory node to store per-process stats.
  * @dummy_job_wa:           struct for dummy job execution workaround for the
  *                          GPU hang issue
  * @dummy_job_wa.ctx:       dummy job workaround context
@@ -1198,7 +1199,7 @@ struct kbase_device {
 
 	size_t total_gpu_pages;
 	struct mutex dma_buf_lock;
-	spinlock_t gpu_mem_usage_lock;
+    spinlock_t gpu_mem_usage_lock;
 
 	struct {
 		struct kbase_context *ctx;
