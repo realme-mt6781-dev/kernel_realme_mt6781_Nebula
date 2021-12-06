@@ -23,7 +23,6 @@ endif
 
 # mtk
 ifeq ($(CONFIG_MTK_ION), y)
-$(info lowmem_dbg mtk_ion use kernel $(CONFIG_KERVER_VERSION))
 ifeq ($(CONFIG_KERVER_VERSION),4.19)
 ccflags-$(CONFIG_MTK_ION)  += -I$(srctree)/drivers/staging/android/mtk_ion/
 endif
