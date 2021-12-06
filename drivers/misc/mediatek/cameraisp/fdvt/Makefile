@@ -190,4 +190,3 @@ endif
 subdir-ccflags-y += -DMTK_FD_LARB=$(MTK_FD_LARB)
 subdir-ccflags-y += -DMTK_SECURE_FD_SUPPORT=$(MTK_SECURE_FD_SUPPORT)
 
-

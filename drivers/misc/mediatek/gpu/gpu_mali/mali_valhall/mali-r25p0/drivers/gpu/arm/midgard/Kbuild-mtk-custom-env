@@ -1,4 +1,3 @@
-$(info mali MTK evironment, building r25p0 DDK)
 
 MTK_TOP = $(srctree)/drivers/misc/mediatek/
 

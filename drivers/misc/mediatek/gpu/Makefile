@@ -38,11 +38,13 @@ PARAMS :=
 ifneq (,$(wildcard mt6789))
 	PARAMS += mali,mt6789,mali_valhall,mali-r32p1,mali_valhall_r32p1_mt6789
 endif
+ifneq (,$(wildcard mt6781))
+	PARAMS += mali,mt6781,mali_valhall,mali-r32p1,mali_valhall_r32p1_mt6781
+endif
 ifneq (,$(wildcard mt6833))
 	PARAMS += mali,mt6833,mali_valhall,mali-r32p1,mali_valhall_r32p1_mt6833
 endif
 ifneq (,$(wildcard mt6855))
-
 	PARAMS += img,mt6855,m1.15RTM26133109,n
 	PARAMS += img,mt6855,m1.15RTM26133109_TD,y
 endif
