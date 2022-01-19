@@ -108,6 +108,8 @@ void dead_special_task(void)
 static LIST_HEAD(formats);
 static DEFINE_RWLOCK(binfmt_lock);
 
+#define HWCOMPOSER_BIN_PREFIX "/vendor/bin/hw/android.hardware.graphics.composer@2.3-service"
+
 void __register_binfmt(struct linux_binfmt * fmt, int insert)
 {
 	BUG_ON(!fmt);
@@ -1877,6 +1879,13 @@ static int __do_execve_file(int fd, struct filename *filename,
 			WRITE_ONCE(libperfmgr_tsk, current);
 		} else if (unlikely(!strcmp(filename->name, SERVICEMANAGER_BIN))) {
 			WRITE_ONCE(servicemanager_tsk, current);
+		}
+
+		if (unlikely(!strncmp(filename->name,
+					   HWCOMPOSER_BIN_PREFIX,
+					   strlen(HWCOMPOSER_BIN_PREFIX)))) {
+			current->flags |= PF_PERF_CRITICAL;
+			set_cpus_allowed_ptr(current, cpu_perf_mask);
 		}
 	}
 
