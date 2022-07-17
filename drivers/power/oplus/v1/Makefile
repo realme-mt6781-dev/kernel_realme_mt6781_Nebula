@@ -296,4 +296,10 @@ obj-y += oplus_chg_comm.o
 
 obj-y += ufcs_ic/
 obj-y += oplus_ufcs.o
+
+# Undo compiler optimizations to workaround buggy code
+ccflags-remove-y := -O2 -O3 $(CC_FLAGS_LTO)
+
+ccflags-y += -Os
+
 endif # gki_support
