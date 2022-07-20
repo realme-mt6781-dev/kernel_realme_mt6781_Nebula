@@ -10659,7 +10659,8 @@ static void oplus_chg_kpoc_power_off_check(struct oplus_chg_chip *chip)
 
 static void oplus_chg_print_log(struct oplus_chg_chip *chip)
 {
-	if (chip->vbatt_num == 1) {
+#if 0
+	if(chip->vbatt_num == 1){
 		charger_xlog_printk(CHG_LOG_CRTI,
 			"CHGR[ %d / %d / %d / %d / %d  / %d ], "
 			"BAT[ %d / %d / %d / %d / %d / %d ], "
@@ -10728,10 +10729,9 @@ static void oplus_chg_print_log(struct oplus_chg_chip *chip)
 	}
 #endif
 	print_voocphy_log_buf();
-	if (chip->charger_type == POWER_SUPPLY_TYPE_USB_DCP) {
-		oplus_pps_print_log();
-		oplus_ufcs_print_log();
-	}
+       if (oplus_pps_get_chg_status() != PPS_NOT_SUPPORT)
+               oplus_pps_print_log();
+#endif
 }
 
 static void oplus_chg_print_bcc_log(struct oplus_chg_chip *chip)
