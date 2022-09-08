@@ -3038,6 +3038,8 @@ struct ion_buffer *ion_drv_file_to_buffer(struct file *file)
 		buffer = dmabuf->priv;
 		return buffer;
 	}
+	if (dmabuf->ops == &dma_buf_ops)
+		buffer = dmabuf->priv;
 
 	return ERR_PTR(-EINVAL);
 }
