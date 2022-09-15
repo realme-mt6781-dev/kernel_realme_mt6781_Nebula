@@ -255,6 +255,7 @@ static int __cache_sync_by_range(struct ion_client *client,
 		goto start_sync;
 
 	/* userspace va check */
+	down_read(&current->mm->mmap_sem);
 	ret  = __ion_is_user_va(start, size);
 	if (ret) {
 		lock_vma = true;
@@ -275,6 +276,7 @@ static int __cache_sync_by_range(struct ion_client *client,
 		IONMSG("%s %s\n", __func__, ion_name);
 		return -EFAULT;
 	}
+	lock_vma = true;
 
 start_sync:
 
