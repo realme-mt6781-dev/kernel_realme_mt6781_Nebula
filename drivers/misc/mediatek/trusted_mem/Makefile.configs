@@ -34,7 +34,3 @@ TCORE_PROFILING_SUPPORT := y
 TCORE_PROFILING_AUTO_DUMP := n
 TCORE_MEMORY_LEAK_DETECTION_SUPPORT := y
 endif
-
-#==========================================================================
-# Dump Option Settings
-#==========================================================================
