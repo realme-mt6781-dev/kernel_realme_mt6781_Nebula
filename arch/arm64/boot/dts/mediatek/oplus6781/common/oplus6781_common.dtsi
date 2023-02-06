@@ -895,6 +895,7 @@
 		irq_need_dev_resume_ok;
 		fw_edge_limit_support;
 		black_gesture_support;
+		black_gesture_indep_support;
 		charger_pump_support;
 		headset_pump_support;
 		esd_handle_support;
@@ -990,6 +991,7 @@
 	/* mt,bled_curr_mode; */
 };
 
+/*#include <oplus6781_21690/cust.dtsi>*/
 /*#include <oplus6781_20684/cust.dtsi>*/
 /*#include "mediatek/cust_mt6781_camera.dtsi"*/
 #include "camera_ldo_mt6781.dtsi"
