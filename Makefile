@@ -545,7 +545,11 @@ else
 CLANG_FLAGS	+= --target=$(CLANG_TARGET_FLAGS)
 endif # CLANG_TARGET_FLAGS
 else
-CLANG_FLAGS	+= --target=$(notdir $(CROSS_COMPILE:%-=%))
+CLANG_TRIPLE	?= $(CROSS_COMPILE)
+CLANG_FLAGS	+= --target=$(notdir $(CLANG_TRIPLE:%-=%))
+ifeq ($(shell $(srctree)/scripts/clang-android.sh $(CC) $(CLANG_FLAGS)), y)
+$(error "Clang with Android --target detected. Did you specify CLANG_TRIPLE?")
+endif
 endif # CROSS_COMPILE
 
 ifeq ($(LLVM_IAS),0)
