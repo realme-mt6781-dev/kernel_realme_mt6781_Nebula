@@ -67,7 +67,7 @@ EXPORT_SYMBOL(ged_kpi_PushAppSelfFcFp_fbt);
 /* set default margin to be distinct from FPSGO(0 or 3) */
 #define GED_KPI_DEFAULT_FPS_MARGIN 4
 #define GED_KPI_CPU_MAX_OPP 0
-
+#define GED_KPI_FPS_LIMIT 120
 
 #define GED_TIMESTAMP_TYPE_D    0x1
 #define GED_TIMESTAMP_TYPE_1    0x2
