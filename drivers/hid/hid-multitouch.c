@@ -691,6 +691,9 @@ static int mt_touch_input_mapping(struct hid_device *hdev, struct hid_input *hi,
 	int code;
 	struct hid_usage *prev_usage = NULL;
 
+	if (!*bit)
+		return -1;
+
 	/*
 	 * Model touchscreens providing buttons as touchpads.
 	 */
