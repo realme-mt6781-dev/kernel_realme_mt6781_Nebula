@@ -1,4 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0
+dtstree := $(srctree)/$(src)
+
+mediatek := $(dtstree)/mediatek
+ifeq "$(wildcard $(mediatek)/Makefile)" ""
 subdir-y += actions
 subdir-y += al
 subdir-y += allwinner
@@ -14,7 +18,6 @@ subdir-y += freescale
 subdir-y += hisilicon
 subdir-y += lg
 subdir-y += marvell
-subdir-y += mediatek
 subdir-y += nvidia
 subdir-y += qcom
 subdir-y += realtek
@@ -26,3 +29,6 @@ subdir-y += synaptics
 subdir-y += ti
 subdir-y += xilinx
 subdir-y += zte
+else
+subdir-y += mediatek
+endif
