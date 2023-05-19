@@ -882,9 +882,6 @@ void __noreturn do_exit(long code)
 		preempt_count_set(PREEMPT_ENABLED);
 	}
 
-#ifdef CONFIG_OPLUS_FEATURE_UID_PERF
-	uid_check_out_pevent(tsk);
-#endif
 
 	profile_task_exit(tsk);
 	kcov_task_exit(tsk);
