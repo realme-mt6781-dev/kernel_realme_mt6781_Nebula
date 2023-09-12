@@ -37,6 +37,8 @@ config MTK_GED_SUPPORT
 	bool "Support MTK GED"
 	default n
 
+source "drivers/gpu/mediatek/gpu_mali/mali_valhall/mali-r32p1/drivers/base/arm/Kconfig"
+
 choice
 	prompt "GPU_VERSION"
 	optional
