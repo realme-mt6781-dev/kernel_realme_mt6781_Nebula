@@ -141,6 +141,8 @@ int kbase_ipa_control_unregister(struct kbase_device *kbdev,
  *
  * @now:            The current monotonic time (ktime_get_raw()).
  *
+ * @now:            The current monotonic time (ktime_get_raw()).
+ *
  * A client that has already opened a session by registering itself to read
  * some performance counters may use this function to query the values of
  * those counters. The values returned are normalized by GPU frequency if
