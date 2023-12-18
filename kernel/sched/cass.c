@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Copyright (C) 2023 Sultan Alsawaf <sultan@kerneltoast.com>.
+ * Copyright (C) 2023-2024 Sultan Alsawaf <sultan@kerneltoast.com>.
  */
 
 /**
@@ -40,7 +40,7 @@ unsigned long cass_cpu_util(int cpu, bool sync)
 
 	/* Deduct @current's util from this CPU if this is a sync wake */
 	if (sync && cpu == smp_processor_id())
-		sub_positive(&util, task_util(current));
+		lsub_positive(&util, task_util(current));
 
 	if (sched_feat(UTIL_EST))
 		util = max_t(unsigned long, util,
@@ -101,9 +101,7 @@ static int cass_best_cpu(struct task_struct *p, int prev_cpu, bool sync)
 	int cidx = 0, cpu;
 
 	/* Get the utilization for this task */
-	p_util = clamp(task_util(p),
-		       uclamp_eff_value(p, UCLAMP_MIN),
-		       uclamp_eff_value(p, UCLAMP_MAX));
+	p_util = task_util_est(p);
 
 	/*
 	 * Find the best CPU to wake @p on. Although idle_get_state() requires
@@ -120,12 +118,11 @@ static int cass_best_cpu(struct task_struct *p, int prev_cpu, bool sync)
 		 * Check if this CPU is idle or only has SCHED_IDLE tasks. For
 		 * sync wakes, always treat the current CPU as idle.
 		 */
-		if ((sync && cpu == smp_processor_id()) || available_idle_cpu(cpu)) {
+		if ((sync && cpu == smp_processor_id()) ||
+		    available_idle_cpu(cpu) || sched_idle_cpu(cpu)) {
 			/* Discard any previous non-idle candidate */
-			if (!has_idle) {
+			if (!has_idle)
 				best = curr;
-				cidx ^= 1;
-			}
 			has_idle = true;
 
 			/* Nonzero exit latency indicates this CPU is idle */
@@ -164,12 +161,13 @@ static int cass_best_cpu(struct task_struct *p, int prev_cpu, bool sync)
 		/* Calculate the relative utilization for this CPU candidate */
 		curr->util = curr->util * SCHED_CAPACITY_SCALE / curr->cap;
 
-		/* If @best == @curr then there's no need to compare them */
-		if (best == curr)
-			continue;
-
-		/* Check if this CPU is better than the best CPU found */
-		if (cass_cpu_better(curr, best, prev_cpu, sync)) {
+		/*
+		 * Check if this CPU is better than the best CPU found so far.
+		 * If @best == @curr then there's no need to compare them, but
+		 * cidx still needs to be changed to the other candidate slot.
+		 */
+		if (best == curr ||
+		    cass_cpu_better(curr, best, prev_cpu, sync)) {
 			best = curr;
 			cidx ^= 1;
 		}
