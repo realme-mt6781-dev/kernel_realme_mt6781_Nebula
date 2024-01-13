@@ -564,6 +564,7 @@ static int battery_get_property(struct power_supply *psy,
 	int ret = 0;
 	int fgcurrent = 0;
 	bool b_ischarging = 0;
+    struct power_supply *bms = NULL;
 
 	struct battery_data *data =
 		container_of(psy->desc, struct battery_data, psd);
@@ -582,7 +583,12 @@ static int battery_get_property(struct power_supply *psy,
 		val->intval = data->BAT_TECHNOLOGY;
 		break;
 	case POWER_SUPPLY_PROP_CYCLE_COUNT:
-		val->intval = gm.bat_cycle;
+		bms = power_supply_get_by_name("bms");
+		if (!bms) {
+			val->intval = 0;
+		} else {
+			power_supply_get_property(bms, POWER_SUPPLY_PROP_CYCLE_COUNT, val);
+		}
 		break;
 	case POWER_SUPPLY_PROP_CAPACITY:
 		/* 1 = META_BOOT, 4 = FACTORY_BOOT 5=ADVMETA_BOOT */
