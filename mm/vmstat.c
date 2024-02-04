@@ -2028,10 +2028,12 @@ void __init init_mm_internals(void)
 	start_shepherd_timer();
 #endif
 #ifdef CONFIG_PROC_FS
-	proc_create_seq("buddyinfo", 0444, NULL, &fragmentation_op);
-	proc_create_seq("pagetypeinfo", 0400, NULL, &pagetypeinfo_op);
+	if (!IS_ENABLED(CONFIG_PROC_STRIPPED)) {
+		proc_create_seq("buddyinfo", 0444, NULL, &fragmentation_op);
+		proc_create_seq("pagetypeinfo", 0400, NULL, &pagetypeinfo_op);
+		proc_create_seq("zoneinfo", 0444, NULL, &zoneinfo_op);
+	}
 	proc_create_seq("vmstat", 0444, NULL, &vmstat_op);
-	proc_create_seq("zoneinfo", 0444, NULL, &zoneinfo_op);
 #if defined(OPLUS_FEATURE_MULTI_FREEAREA) && defined(CONFIG_PHYSICAL_ANTI_FRAGMENTATION)
     pentry = proc_create("free_area_list_show", S_IRWXUGO, NULL, &proc_free_area_fops);
     if (!pentry) {
