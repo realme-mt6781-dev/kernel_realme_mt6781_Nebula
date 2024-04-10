@@ -77,7 +77,6 @@
 #include <soc/oplus/system/oppo_process.h>
 #endif
 
-#ifdef CONFIG_OPLUS_FEATURE_UID_PERF
 extern void uid_check_out_pevent(struct task_struct *task);
 
 /*

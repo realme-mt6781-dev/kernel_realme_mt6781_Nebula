@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: GPL-2.0
 /*
  *  linux/fs/ext4/sysfs.c
@@ -269,6 +270,12 @@ EXT4_ATTR_FEATURE(metadata_csum_seed);
 #if defined(CONFIG_UNICODE) && defined(CONFIG_FS_ENCRYPTION)
 EXT4_ATTR_FEATURE(encrypted_casefold);
 #endif
+#ifdef CONFIG_OPLUS_FEATURE_EXT4_FSYNC
+extern bool ext4_fsync_nobarrier;
+extern bool ext4_fsync_protect;
+EXT4_ATTR(fsync_nobarrier, 0666, fsync_nobarrier);
+EXT4_ATTR(fsync_protect, 0666, fsync_protect);
+#endif
 
 static struct attribute *ext4_feat_attrs[] = {
 	ATTR_LIST(lazy_itable_init),
@@ -287,6 +294,10 @@ static struct attribute *ext4_feat_attrs[] = {
 	ATTR_LIST(metadata_csum_seed),
 #if defined(CONFIG_UNICODE) && defined(CONFIG_FS_ENCRYPTION)
 	ATTR_LIST(encrypted_casefold),
+#endif
+#ifdef CONFIG_OPLUS_FEATURE_EXT4_FSYNC
+	ATTR_LIST(fsync_nobarrier),
+	ATTR_LIST(fsync_protect),
 #endif
 	NULL,
 };
@@ -536,4 +547,3 @@ void ext4_exit_sysfs(void)
 	remove_proc_entry(proc_dirname, NULL);
 	ext4_proc_root = NULL;
 }
-
