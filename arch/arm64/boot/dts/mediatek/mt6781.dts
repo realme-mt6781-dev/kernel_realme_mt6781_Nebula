@@ -5374,7 +5374,6 @@
 	};
 };
 
-#include "mediatek/oplus6781/21690/cust.dtsi"
 #include "mediatek/mt6366.dtsi"
 #include "mediatek/cust_mt6781_msdc.dtsi"
 #include "mediatek/mt6370.dtsi"

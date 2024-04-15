@@ -297,7 +297,7 @@
 #endif
 
 
-#include "mediatek/oplus6781/21690/cust.dtsi"
+#include <k6781v1_64_k419/cust.dtsi>
 #include "mediatek/camera_ldo_mt6781.dtsi"
 #include "mediatek/cust_mt6781_camera_space.dtsi"
 #include "mediatek/cust_mt6781_touch_1080x2300.dtsi"
