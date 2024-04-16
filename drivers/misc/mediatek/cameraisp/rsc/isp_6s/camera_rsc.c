@@ -2974,7 +2974,7 @@ static signed int RSC_probe(struct platform_device *pDev)
 
 #if defined(RSC_PMQOS_EN) && defined(CONFIG_MTK_QOS_SUPPORT)
 		pm_qos_add_request(&rsc_pm_qos_request,
-			PM_QOS_MM_MEMORY_BANDWIDTH, PM_QOS_DEFAULT_VALUE);
+			PM_QOS_MEMORY_BANDWIDTH, PM_QOS_DEFAULT_VALUE);
 #if 0   // old cmdq command and no more use
 		cmdqCoreRegisterTaskCycleCB(CMDQ_GROUP_RSC, cmdq_pm_qos_start,
 							cmdq_pm_qos_stop);
