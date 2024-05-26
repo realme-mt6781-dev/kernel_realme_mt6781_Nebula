@@ -1,5 +1,5 @@
 config OPLUS_FEATURE_GAME_OPT
         tristate "game optimization"
-        default n
+        default y
         help
             game optimization support
