@@ -427,11 +427,7 @@ static ssize_t zstd_decompress_safe(struct mount_info *mi,
 	ZSTD_inBuffer inbuf = {.src = src.data,	.size = src.len};
 	ZSTD_outBuffer outbuf = {.dst = dst.data, .size = dst.len};
 
-#if defined(CONFIG_ARM64) && defined(CONFIG_KERNEL_MODE_NEON)
-	result = LZ4_arm64_decompress_safe(src.data, dst.data, src.len, dst.len, false);
-#else
 	result = LZ4_decompress_safe(src.data, dst.data, src.len, dst.len);
-#endif
 
 	result = mutex_lock_interruptible(&mi->mi_zstd_workspace_mutex);
 	if (result)
