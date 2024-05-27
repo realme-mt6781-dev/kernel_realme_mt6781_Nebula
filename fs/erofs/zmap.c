@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
- * Copyright (C) 2018-2019 odm, Inc.
- *             https://www.odm.com/
- * Created by Gao Xiang <gaoxiang25@odm.com>
+ * Copyright (C) 2018-2019 HUAWEI, Inc.
+ *             https://www.huawei.com/
  */
 #include "internal.h"
 #include <asm/unaligned.h>
@@ -597,4 +596,3 @@ out:
 	DBG_BUGON(err < 0 && err != -ENOMEM);
 	return err;
 }
-

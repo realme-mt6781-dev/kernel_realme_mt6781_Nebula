@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Copyright (C) 2018 HUAWEI, Inc.
+ *             https://www.huawei.com/
+ */
 #include "zdata.h"
 #include "compress.h"
 #include <linux/prefetch.h>
-#include <linux/mm_inline.h>
-#include <linux/overflow.h>
 
 #include <trace/events/erofs.h>
 
@@ -140,16 +142,6 @@ static inline int z_erofs_init_workqueue(void)
 					    WQ_UNBOUND | WQ_HIGHPRI,
 					    onlinecpus + onlinecpus / 4);
 	return z_erofs_workqueue ? 0 : -ENOMEM;
-}
-
-static void z_erofs_pcluster_init_always(struct z_erofs_pcluster *pcl)
-{
-	struct z_erofs_collection *cl = z_erofs_primarycollection(pcl);
-
-	atomic_set(&pcl->obj.refcount, 1);
-
-	DBG_BUGON(cl->nr_pages);
-	DBG_BUGON(cl->vcnt);
 }
 
 int __init z_erofs_init_zip_subsystem(void)
@@ -339,8 +331,11 @@ int erofs_try_to_free_all_cached_pages(struct erofs_sb_info *sbi,
 
 		/* barrier is implied in the following 'unlock_page' */
 		WRITE_ONCE(pcl->compressed_pages[i], NULL);
-		detach_page_private(page);
+
+		set_page_private(page, 0);
+		ClearPagePrivate(page);
 		unlock_page(page);
+		put_page(page);
 	}
 	return 0;
 }
@@ -363,8 +358,11 @@ int erofs_try_to_free_cached_page(struct address_space *mapping,
 		}
 		erofs_workgroup_unfreeze(&pcl->obj, 1);
 
-		if (ret)
-			detach_page_private(page);
+		if (ret) {
+			set_page_private(page, 0);
+			ClearPagePrivate(page);
+			put_page(page);
+		}
 	}
 	return ret;
 }
@@ -479,7 +477,6 @@ static int z_erofs_lookup_collection(struct z_erofs_collector *clt,
 	/* used to check tail merging loop due to corrupted images */
 	if (clt->owned_head == Z_EROFS_PCLUSTER_TAIL)
 		clt->tailpcl = pcl;
-
 	clt->pcl = pcl;
 	z_erofs_try_to_claim_pcluster(clt);
 	clt->pcl = pcl;
@@ -500,7 +497,7 @@ static int z_erofs_register_collection(struct z_erofs_collector *clt,
 	if (IS_ERR(pcl))
 		return PTR_ERR(pcl);
 
-	z_erofs_pcluster_init_always(pcl);
+	atomic_set(&pcl->obj.refcount, 1);
 	pcl->obj.index = map->m_pa >> PAGE_SHIFT;
 
 	pcl->length = (map->m_llen << Z_EROFS_PCLUSTER_LENGTH_BIT) |
@@ -524,7 +521,7 @@ static int z_erofs_register_collection(struct z_erofs_collector *clt,
 	 * and mutex_trylock *never* fails for a new pcluster.
 	 */
 	mutex_init(&cl->lock);
-	mutex_trylock(&cl->lock);
+	DBG_BUGON(!mutex_trylock(&cl->lock));
 
 	err = erofs_register_workgroup(inode->i_sb, &pcl->obj);
 	if (err) {
@@ -817,8 +814,8 @@ static void z_erofs_decompressqueue_endio(struct bio *bio)
 	tagptr1_t t = tagptr_init(tagptr1_t, bio->bi_private);
 	struct z_erofs_decompressqueue *q = tagptr_unfold_ptr(t);
 	blk_status_t err = bio->bi_status;
-	unsigned int i;
 	struct bio_vec *bvec;
+	unsigned int i;
 
 	bio_for_each_segment_all(bvec, bio, i) {
 		struct page *page = bvec->bv_page;
@@ -1188,9 +1185,8 @@ out_tocache:
 		set_page_private(page, Z_EROFS_SHORTLIVED_PAGE);
 		goto out;
 	}
-	attach_page_private(page, pcl);
-	/* drop a refcount added by allocpage (then we have 2 refs here) */
-	put_page(page);
+	set_page_private(page, (unsigned long)pcl);
+	SetPagePrivate(page);
 
 out:	/* the only exit (for tracing and debugging) */
 	return page;
@@ -1397,7 +1393,7 @@ static int z_erofs_readpage(struct file *file, struct page *page)
 	(void)z_erofs_collector_end(&f.clt);
 
 	/* if some compressed cluster ready, need submit them anyway */
-	z_erofs_runqueue(inode->i_sb, &f, &pagepool, false);
+	z_erofs_runqueue(inode->i_sb, &f, &pagepool, true);
 
 	if (err)
 		erofs_err(inode->i_sb, "failed to read, err [%d]", err);
@@ -1467,7 +1463,7 @@ static int z_erofs_readpages(struct file *filp, struct address_space *mapping,
 
 	(void)z_erofs_collector_end(&f.clt);
 
-	z_erofs_runqueue(inode->i_sb, &f, &pagepool, false);
+	z_erofs_runqueue(inode->i_sb, &f, &pagepool, sync);
 
 	if (f.map.mpage)
 		put_page(f.map.mpage);
@@ -1481,4 +1477,3 @@ const struct address_space_operations z_erofs_aops = {
 	.readpage = z_erofs_readpage,
 	.readpages = z_erofs_readpages,
 };
-

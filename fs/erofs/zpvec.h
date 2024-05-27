@@ -1,8 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
- * Copyright (C) 2018 odm, Inc.
- *             https://www.odm.com/
- * Created by Gao Xiang <gaoxiang25@odm.com>
+ * Copyright (C) 2018 HUAWEI, Inc.
+ *             https://www.huawei.com/
  */
 #ifndef __EROFS_FS_ZPVEC_H
 #define __EROFS_FS_ZPVEC_H
@@ -158,4 +157,3 @@ z_erofs_pagevec_dequeue(struct z_erofs_pagevec_ctor *ctor,
 	return tagptr_unfold_ptr(t);
 }
 #endif
-
