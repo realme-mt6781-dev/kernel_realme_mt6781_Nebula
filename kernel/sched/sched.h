@@ -90,6 +90,7 @@
 struct rq;
 struct cpuidle_state;
 
+unsigned long apply_dvfs_headroom(unsigned long util, int cpu, bool tapered);
 #if defined(OPLUS_FEATURE_SCHED_ASSIST) && defined(CONFIG_OPLUS_FEATURE_SCHED_SPREAD)
 extern unsigned int sched_capacity_margin_up[NR_CPUS];
 extern unsigned int sched_capacity_margin_down[NR_CPUS];
