@@ -11,7 +11,7 @@
  * - use C pre-processor to make it easier to change S table access
  * - added option (AES_SMALL_TABLES) for reducing code size by about 8 kB at
  *   cost of reduced throughput (quite small difference on Pentium 4,
- *   10-25% when using -O1 or -O2 optimization)
+ *   10-25% when using -O1 or -O3 optimization)
  *
  * Copyright (c) 2003-2012, Jouni Malinen <j@w1.fi>
  *

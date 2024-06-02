@@ -1,6 +1,6 @@
 
 INCLUDEDIR := -I. -I../../../../../drivers/staging/android/uapi/ -I../../../../../usr/include/
-CFLAGS := $(CFLAGS) $(INCLUDEDIR) -Wall -O2 -g
+CFLAGS := $(CFLAGS) $(INCLUDEDIR) -Wall -O3 -g
 
 TEST_GEN_FILES := ionapp_export ionapp_import ionmap_test
 

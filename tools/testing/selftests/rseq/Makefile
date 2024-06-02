@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0+ OR MIT
-CFLAGS += -O2 -Wall -g -I./ -I../../../../usr/include/ -L./ -Wl,-rpath=./
+CFLAGS += -O3 -Wall -g -I./ -I../../../../usr/include/ -L./ -Wl,-rpath=./
 LDLIBS += -lpthread
 
 # Own dependencies because we only want to build against 1st prerequisite, but

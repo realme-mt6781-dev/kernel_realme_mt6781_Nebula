@@ -1,4 +1,4 @@
-CFLAGS += -Wall -O2 -Wno-unused-function
+CFLAGS += -Wall -O3 -Wno-unused-function
 CFLAGS += -D_GNU_SOURCE
 
 TEST_GEN_PROGS :=
