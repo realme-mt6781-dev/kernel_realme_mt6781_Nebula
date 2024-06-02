@@ -766,6 +766,8 @@ KBUILD_CFLAGS += $(call cc-option,-mcpu=cortex-a76.cortex-a55)
 endif
 endif
 
+OPT_FLAGS := -O3 -march=armv8.2-a+dotprod -mcpu=cortex-a55+crypto+crc
+
 KBUILD_CFLAGS += $(call cc-ifversion, -gt, 0900, \
 			$(call cc-option, -Wno-psabi) \
 			$(call cc-disable-warning,maybe-uninitialized,) \
