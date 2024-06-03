@@ -765,9 +765,8 @@ ifeq ($(cc-name),clang)
 KBUILD_CFLAGS += $(call cc-option,-mcpu=cortex-a76.cortex-a55)
 endif
 ifdef CONFIG_INLINE_OPTIMIZATION
-KBUILD_CFLAGS	+= -mllvm -inline-threshold=2000
-KBUILD_CFLAGS	+= -mllvm -inlinehint-threshold=3000
-KBUILD_CFLAGS   += -mllvm -unroll-threshold=1200
+KBUILD_CFLAGS	+= -mllvm -inline-threshold=600
+KBUILD_CFLAGS	+= -mllvm -inlinehint-threshold=750
 endif
 endif
 
