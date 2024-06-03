@@ -135,7 +135,7 @@ void update_ux_sched_cputopo(void)
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0))
 		cpu_cap = arch_scale_cpu_capacity(cpu);
 #else
-		cpu_cap = arch_scale_cpu_capacity(cpu);
+		cpu_cap = arch_scale_cpu_capacity(NULL, cpu);
 #endif
 
 		/* add cpu with same capacity into target sched_cls */
