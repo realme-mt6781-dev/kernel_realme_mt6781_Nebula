@@ -1,4 +1,4 @@
-CFLAGS += -I. -I../../include -g -O3 -Wall -fsanitize=address
+CFLAGS += -I. -I../../include -g -O2 -Wall -fsanitize=address
 LDFLAGS += -fsanitize=address -fsanitize=undefined
 TARGETS = main
 OFILES = main.o scatterlist.o

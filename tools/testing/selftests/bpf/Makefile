@@ -10,7 +10,7 @@ ifneq ($(wildcard $(GENHDR)),)
   GENFLAGS := -DHAVE_GENHDR
 endif
 
-CFLAGS += -Wall -O3 -I$(APIDIR) -I$(LIBDIR) -I$(BPFDIR) -I$(GENDIR) $(GENFLAGS) -I../../../include
+CFLAGS += -Wall -O2 -I$(APIDIR) -I$(LIBDIR) -I$(BPFDIR) -I$(GENDIR) $(GENFLAGS) -I../../../include
 LDLIBS += -lcap -lelf -lrt -lpthread
 
 TEST_CUSTOM_PROGS = $(OUTPUT)/urandom_read
@@ -128,7 +128,7 @@ endif
 # it successfully
 $(OUTPUT)/test_xdp.o: test_xdp.c
 	$(CLANG) $(CLANG_FLAGS) \
-		-O3 -emit-llvm -c $< -o - | \
+		-O2 -emit-llvm -c $< -o - | \
 	$(LLC) -march=bpf -mcpu=$(CPU) $(LLC_FLAGS) -filetype=obj -o $@
 ifeq ($(DWARF2BTF),y)
 	$(BTF_PAHOLE) -J $@
@@ -136,7 +136,7 @@ endif
 
 $(OUTPUT)/%.o: %.c
 	$(CLANG) $(CLANG_FLAGS) \
-		 -O3 -target bpf -emit-llvm -c $< -o - |      \
+		 -O2 -target bpf -emit-llvm -c $< -o - |      \
 	$(LLC) -march=bpf -mcpu=$(CPU) $(LLC_FLAGS) -filetype=obj -o $@
 ifeq ($(DWARF2BTF),y)
 	$(BTF_PAHOLE) -J $@

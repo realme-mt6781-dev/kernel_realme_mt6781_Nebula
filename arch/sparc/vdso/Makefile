@@ -54,7 +54,7 @@ $(obj)/vdso-image-%.c: $(obj)/vdso%.so.dbg $(obj)/vdso%.so $(obj)/vdso2c FORCE
 # Don't omit frame pointers for ease of userspace debugging, but do
 # optimize sibling calls.
 #
-CFL := $(PROFILING) -mcmodel=medlow -fPIC -O3 -fasynchronous-unwind-tables \
+CFL := $(PROFILING) -mcmodel=medlow -fPIC -O2 -fasynchronous-unwind-tables \
        -m64 -ffixed-g2 -ffixed-g3 -fcall-used-g4 -fcall-used-g5 -ffixed-g6 \
        -ffixed-g7 $(filter -g%,$(KBUILD_CFLAGS)) \
        $(call cc-option, -fno-stack-protector) -fno-omit-frame-pointer \

@@ -10,10 +10,10 @@
  *
  * Usage:
  * $ # for 4.5/4.6/C based 4.7
- * $ gcc -I`gcc -print-file-name=plugin`/include -I`gcc -print-file-name=plugin`/include/c-family -fPIC -shared -O3 -o randomize_layout_plugin.so randomize_layout_plugin.c
+ * $ gcc -I`gcc -print-file-name=plugin`/include -I`gcc -print-file-name=plugin`/include/c-family -fPIC -shared -O2 -o randomize_layout_plugin.so randomize_layout_plugin.c
  * $ # for C++ based 4.7/4.8+
- * $ g++ -I`g++ -print-file-name=plugin`/include -I`g++ -print-file-name=plugin`/include/c-family -fPIC -shared -O3 -o randomize_layout_plugin.so randomize_layout_plugin.c
- * $ gcc -fplugin=./randomize_layout_plugin.so test.c -O3
+ * $ g++ -I`g++ -print-file-name=plugin`/include -I`g++ -print-file-name=plugin`/include/c-family -fPIC -shared -O2 -o randomize_layout_plugin.so randomize_layout_plugin.c
+ * $ gcc -fplugin=./randomize_layout_plugin.so test.c -O2
  */
 
 #include "gcc-common.h"

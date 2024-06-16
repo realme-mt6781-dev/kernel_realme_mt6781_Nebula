@@ -9,7 +9,7 @@ YACC = bison
 MAKE = make
 INSTALL ?= install
 
-CFLAGS += -Wall -O3
+CFLAGS += -Wall -O2
 CFLAGS += -D__EXPORTED_HEADERS__ -I$(srctree)/include/uapi -I$(srctree)/include
 
 ifeq ($(srctree),)

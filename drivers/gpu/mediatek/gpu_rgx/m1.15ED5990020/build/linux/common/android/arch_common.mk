@@ -231,7 +231,7 @@ endif # !VNDK
 
 SYS_INCLUDES := -isystem android/ndk $(SYS_INCLUDES)
 
-OPTIM ?= -O3
+OPTIM ?= -O2
 
 # Android enables build-id sections to allow mapping binaries to debug
 # information for symbol resolution
