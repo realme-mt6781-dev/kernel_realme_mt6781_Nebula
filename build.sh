@@ -2,14 +2,14 @@
 clear
 function compile() 
 {
-echo InfixKernel-spaced, CODENAMED - spaced
+echo cosmos, CODENAMED - spaced
 echo
 sleep 3 >/dev/null
 source ~/.bashrc && source ~/.profile
 export LC_ALL=C && export USE_CCACHE=1
 ccache -M 100G >/dev/null
 export ARCH=arm64
-export KBUILD_BUILD_HOST=InfixKernel-spaced
+export KBUILD_BUILD_HOST=cosmos
 export KBUILD_BUILD_USER="HELLINFIX"
 
 clangbin=clang/bin/clang
@@ -60,9 +60,9 @@ rm -rf AnyKernel
 git clone --depth=1 https://github.com/HELLINFIX/AnyKernel3 AnyKernel
 cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 cd AnyKernel
-zip -r9 InfixKernel-spaced-OSS-Kernel.zip *
+zip -r9 cosmos-${TANGGAL}.zip *
 curl -sL https://git.io/file-transfer | sh
-./transfer fio InfixKernel-spaced-OSS-Kernel.zip
+./transfer fio cosmos-${TANGGAL}.zip
 cd ../
 fi
 }
