@@ -444,7 +444,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -pipe \
 KBUILD_CPPFLAGS := -D__KERNEL__
 
 # Flags to tune generated code for Cortex-A55 CPU
-KBUILD_CFLAGS += -march=armv8-a -mtune=cortex-a55
+KBUILD_CFLAGS += -march=armv8-a -mtune=cortex-a55 
 
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
@@ -727,6 +727,7 @@ KBUILD_LDFLAGS  += -O3 --plugin-opt=O3
 else
 KBUILD_CFLAGS   += -O3
 ifeq ($(cc-name),clang)
+KBUILD_CFLAGS	+= -mcpu=cortex-a55 -mtune=cortex-a55
 KBUILD_CFLAGS += $(call cc-option,-mcpu=cortex-a76.cortex-a55)
 endif
 endif
