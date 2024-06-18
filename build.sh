@@ -16,7 +16,11 @@ export KBUILD_BUILD_USER="HELLINFIX"
 sudo apt install -y libelf-dev libarchive-tools zstd flex bc ccache
 
 clangbin=clang/bin/clang
-if ! [ -a $clangbin ]; then git clone --depth=1 https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r487747c.git -b 14.0 clang
+if ! [ -a $clangbin ]; then mkdir clang && cd clang
+bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) -S
+bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) --patch=glibc
+ls
+cd ..
 fi
 gcc64bin=gcc64/bin/aarch64-linux-android-as
 if ! [ -a $gcc64bin ]; then git clone --depth=1 --single-branch https://github.com/mvaisakh/gcc-arm64.git gcc64
