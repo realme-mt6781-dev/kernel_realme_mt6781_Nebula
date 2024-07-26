@@ -1,5 +1,7 @@
 OPTIM = -Os
 
+$(info [GPU_DEBUG] MTK_PLATFORM = $(MTK_PLATFORM))
+
 ifeq ($(MTK_PLATFORM),mt6765)
 	ccflags-y += -DCONFIG_MACH_MT6765
 else ifeq ($(MTK_PLATFORM),mt6779)
