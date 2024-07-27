@@ -2,15 +2,14 @@
 clear
 function compile() 
 {
-echo cosmos, CODENAMED - spaced
+echo Cosmos, CODENAMED - spaced
 echo
 sleep 3 >/dev/null
 source ~/.bashrc && source ~/.profile
 export LC_ALL=C && export USE_CCACHE=1
 ccache -M 100G >/dev/null
-TANGGAL=$(date +"%Y%m%d-%H")
 export ARCH=arm64
-export KBUILD_BUILD_HOST=cosmos
+export KBUILD_BUILD_HOST=Cosmos
 export KBUILD_BUILD_USER="HELLINFIX"
 
 sudo apt install -y libelf-dev libarchive-tools zstd flex bc ccache
@@ -21,12 +20,6 @@ bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/
 bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) --patch=glibc
 ls
 cd ..
-fi
-gcc64bin=gcc64/bin/aarch64-linux-android-as
-if ! [ -a $gcc64bin ]; then git clone --depth=1 --single-branch https://github.com/mvaisakh/gcc-arm64.git gcc64
-fi
-gcc32bin=gcc32/bin/arm-linux-androideabi-as
-if ! [ -a $gcc32bin ]; then git clone --depth=1 --single-branch https://github.com/mvaisakh/gcc-arm.git gcc32
 fi
 read -p "Wanna do dirty build? (Y/N): " build_type
 if [[ $build_type == "N" || $build_type == "n" ]]; then
@@ -49,22 +42,12 @@ fi
 
 make O=out ARCH=arm64 spaced_defconfig
 
-PATH="${PWD}/clang/bin:${PATH}:${PWD}/gcc32/bin:${PATH}:${PWD}/gcc64/bin:${PATH}" \
-make -j$(nproc --all)   O=out \
-                        ARCH=arm64 \
-                        CC="clang" \
-                        CLANG_TRIPLE=aarch64-linux-gnu- \
-                        CROSS_COMPILE="${PWD}/gcc64/bin/aarch64-linux-gnu-" \
-                        CROSS_COMPILE_ARM32="${PWD}/gcc32/bin/arm-linux-gnueabi-" \
-                        LD=ld.lld \
-                        AS=llvm-as \
-                        AR=llvm-ar \
-                        NM=llvm-nm \
-                        LLVM=1 \
-                        LLVM_IAS=1 \
-                        OBJCOPY=llvm-objcopy \
-                        STRIP=llvm-strip \
-                        CONFIG_NO_ERROR_ON_MISMATCH=y 2>&1 | tee error.log 
+PATH="${PWD}/clang/bin:${PATH}" \
+make -j$(nproc --all) O=out \
+                      CC="clang" \
+                      LLVM=1 \
+                      LLVM_IAS=1 \
+                       CONFIG_NO_ERROR_ON_MISMATCH=y 2>&1 | tee error.log 
 }
 
 function zupload()
@@ -76,12 +59,14 @@ echo  " Failed to compile zImage, fix the errors first "
 else
 echo -e " Build succesful, generating flashable zip now "
 rm -rf AnyKernel
-git clone --depth=1 https://github.com/HELLINFIX/AnyKernel3 AnyKernel
+anykernelbin=AnyKernel/anykernel.sh
+if ! [ -a $anykernelbin ]; then git clone --depth=1 https://github.com/HELLINFIX/AnyKernel3 AnyKernel
+fi
 cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 cd AnyKernel
-zip -r9 cosmos-${TANGGAL}.zip *
+zip -r9 Cosmos-OSS-Kernel.zip *
 curl -sL https://git.io/file-transfer | sh
-./transfer fio cosmos-${TANGGAL}.zip
+./transfer fio Cosmos-OSS-Kernel.zip
 cd ../
 fi
 }
