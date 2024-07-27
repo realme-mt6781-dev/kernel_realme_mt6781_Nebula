@@ -31,8 +31,6 @@ obj-y += mt6853/
 else
 ifeq ($(CONFIG_MACH_MT6873),y)
 obj-y += mt6873/
-else
-obj-y += $(subst ",,$(CONFIG_MTK_PLATFORM))/
 endif
 endif
 endif
