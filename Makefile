@@ -744,9 +744,13 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS   += -Os
 else
-KBUILD_CFLAGS   += -O3
+KBUILD_CFLAGS   += -O3 -march=armv8.2-a+lse+crypto+dotprod --cuda-path=/dev/null
+KBUILD_LDFLAGS  += -O3 --plugin-opt=O3
 ifeq ($(cc-name),clang)
-KBUILD_CFLAGS	+= -mcpu=cortex-a55 -mtune=cortex-a55
+KBUILD_CFLAGS   += -march=armv8-a -mcpu=cortex-a55+crypto -mtune=cortex-a55
+ifeq ($(CONFIG_LD_IS_LLD), y)
+KBUILD_LDFLAGS  += -O3 --plugin-opt=O3 --strip-debug -mllvm -mcpu=cortex-a55+crypto+crc 
+endif
 endif
 endif
 
