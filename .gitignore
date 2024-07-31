@@ -142,4 +142,4 @@ kernel/configs/android-*.cfg
 /gcc64/
 /AnyKernel/
 /modules/
-error.log
+build.log
