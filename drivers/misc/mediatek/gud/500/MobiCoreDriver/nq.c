@@ -893,9 +893,6 @@ static s32 tee_schedule(uintptr_t arg, unsigned int *timeout_ms)
 		 */
 		tee_set_affinity();
 
-		/* Set basic utils to boost TEE performance. */
-		mtk_set_task_basic_util(current);
-
 		/* Refresh MCI REE time */
 		nq_update_time();
 
