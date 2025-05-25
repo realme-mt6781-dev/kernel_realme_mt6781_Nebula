@@ -7646,13 +7646,6 @@ static int start_cpu(struct task_struct *p, bool prefer_idle,
 
 	if (boosted && (task_util(p) >= stune_task_threshold))
 		return boosted ? rd->max_cap_orig_cpu : rd->min_cap_orig_cpu;
-#ifdef OPLUS_FEATURE_UIFIRST
-	if (sysctl_uifirst_enabled && (sysctl_slide_boost_enabled || sysctl_animation_type == LAUNCHER_SI_START)&& is_heavy_ux_task(p) &&
-	(scale_demand(p->ravg.demand) >= sysctl_boost_task_threshold ||
-	 scale_demand(p->ravg.sum) >= sysctl_boost_task_threshold)) {
-		return rd->max_cap_orig_cpu;
-	}
-#endif
 	return rd->min_cap_orig_cpu;
 }
 
@@ -12235,18 +12228,6 @@ static void rq_offline_fair(struct rq *rq)
 	unthrottle_offline_cfs_rqs(rq);
 }
 
-#ifdef OPLUS_FEATURE_UIFIRST
-bool ux_task_misfit(struct task_struct *p, int cpu)
-{
-	int num_mincpu = cpumask_weight(topology_core_cpumask(0));
-	if ((scale_demand(p->ravg.sum) >= sysctl_boost_task_threshold ||
-	     scale_demand(p->ravg.demand) >= sysctl_boost_task_threshold) && cpu < num_mincpu)
-		return true;
-
-	return false;
-}
-#endif
-
 static DEFINE_RAW_SPINLOCK(migration_lock);
 void check_for_migration(struct rq *rq, struct task_struct *p)
 {
@@ -12272,12 +12253,7 @@ void check_for_migration(struct rq *rq, struct task_struct *p)
 		}
 	}
 
-#ifdef OPLUS_FEATURE_UIFIRST
-	if (rq->misfit_task_load || (sysctl_uifirst_enabled && sysctl_slide_boost_enabled &&
-					is_heavy_ux_task(p) && ux_task_misfit(p, cpu))) {
-#else
 	if (rq->misfit_task_load) {
-#endif
 		if (rq->curr->state != TASK_RUNNING ||
 			rq->curr->nr_cpus_allowed == 1)
 			return;

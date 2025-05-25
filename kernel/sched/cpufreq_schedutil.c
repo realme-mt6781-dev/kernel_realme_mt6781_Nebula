@@ -21,11 +21,6 @@
 #include "sched.h"
 #include "tune.h"
 #include "cpufreq_schedutil.h"
-#ifdef OPLUS_FEATURE_UIFIRST
-extern int sysctl_slide_boost_enabled;
-extern int sysctl_uifirst_enabled;
-extern u64 ux_task_load[];
-#endif
 static struct cpufreq_governor schedutil_gov;
 unsigned long boosted_cpu_util(int cpu);
 
@@ -262,15 +257,8 @@ static void sugov_get_util(unsigned long *util, unsigned long *max, int cpu)
 
 	*util = boosted_cpu_util(cpu);
 
-#ifdef OPLUS_FEATURE_UIFIRST
-	if (!sysctl_uifirst_enabled || !(sysctl_slide_boost_enabled || sysctl_animation_type == LAUNCHER_SI_START)|| !ux_task_load[cpu]) {
-		if (idle_cpu(cpu))
-			*util = 0;
-	}
-#else
 	if (idle_cpu(cpu))
 		*util = 0;
-#endif
 
 	*util = min(*util, max_cap);
 	*max = max_cap;
