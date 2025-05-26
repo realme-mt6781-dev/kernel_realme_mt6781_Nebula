@@ -23,17 +23,14 @@ function compile() {
   sudo apt install -y libelf-dev libarchive-tools zstd flex bc ccache
 
   # Download clang if not present
-clangbin=clang/bin/clang
-if ! [ -a $clangbin ]; then --depth=1 https://github.com/kdrag0n/proton-clang clang
-fi
-gcc64bin=los-4.9-64/bin/aarch64-linux-android-as
-if ! [ -a $gcc64bin ]; then git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 los-4.9-64
-fi
-gcc32bin=los-4.9-32/bin/arm-linux-androideabi-as
-if ! [ -a $gcc32bin ]; then git clone --depth=1 https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 los-4.9-32
-fi
+  if [[ ! -d "clang" ]]; then mkdir clang && cd clang
+  bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) -S
+  bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) --patch=glibc
+  ls
+  cd ..
+  fi
 
-# create output directory and do a clean or dirty build
+  # create output directory and do a clean or dirty build
   read -p "Wanna do dirty build? (Y/N): " build_type
   if [[ $build_type == "N" || $build_type == "n" ]]; then
   echo Deleting out directory and doing clean Build
@@ -53,19 +50,11 @@ fi
   # Build the kernel
   make -j$(nproc --all) O=out ARCH=arm64 spaced_defconfig
 
-PATH="${PWD}/clang/bin:${PATH}:${PWD}/los-4.9-32/bin:${PATH}:${PWD}/los-4.9-64/bin:${PATH}" \
-make -j$(nproc --all)   O=out \
-                        ARCH=arm64 \
-                        CC="clang" \
-                        CLANG_TRIPLE=aarch64-linux-gnu- \
-                        CROSS_COMPILE="${PWD}/los-4.9-64/bin/aarch64-linux-android-" \
-                        CROSS_COMPILE_ARM32="${PWD}/los-4.9-32/bin/arm-linux-androideabi-" \
-                        LD=ld.lld \
-                        AS=llvm-as \
-                        AR=llvm-ar \
-                        NM=llvm-nm \
-                        OBJCOPY=llvm-objcopy \
-                        CONFIG_NO_ERROR_ON_MISMATCH=y 2>&1 | tee build.log
+  # Add clang bin directory to PATH
+  PATH="${PWD}/clang/bin:${PATH}"
+
+  # Build the kernel with clang and log output
+  make -j$(nproc --all) O=out CC="clang" LLVM=1 CONFIG_NO_ERROR_ON_MISMATCH=y 2>&1 | tee build.log
 }
 
 function zupload()
