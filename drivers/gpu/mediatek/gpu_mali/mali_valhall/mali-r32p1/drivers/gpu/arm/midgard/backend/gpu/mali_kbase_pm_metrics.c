@@ -196,7 +196,7 @@ static void kbase_pm_get_dvfs_utilisation_calc(struct kbase_device *kbdev)
 	 */
 	err = kbase_ipa_control_query(
 		kbdev, kbdev->pm.backend.metrics.ipa_control_client,
-		&gpu_active_counter, 1, &protected_time, &now);
+        &gpu_active_counter, 1, &protected_time, &now);
 
 	if (err) {
 		dev_err(kbdev->dev,
