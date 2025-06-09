@@ -2061,7 +2061,7 @@ CONFIG_MTK_RTC=y
 # CONFIG_MTK_PERF_OBSERVER is not set
 # CONFIG_MTK_RESYM is not set
 # CONFIG_MTK_FRS is not set
-CONFIG_MTK_TASK_TURBO=y
+# CONFIG_MTK_TASK_TURBO is not set
 
 #
 # TinySys
